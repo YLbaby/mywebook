@@ -41,6 +41,12 @@ func (dao *UserDAO) Insert(ctx context.Context, u User) error {
 	return err
 }
 
+func (dao *UserDAO) FindById(ctx context.Context, Id int64) (User, error) {
+	var u User
+	err := dao.db.WithContext(ctx).Where("id = ?", Id).First(&u).Error
+	return u, err
+}
+
 func (dao *UserDAO) FindByEmail(ctx context.Context, email string) (User, error) {
 	var u User
 	err := dao.db.WithContext(ctx).Where("email = ?", email).First(&u).Error

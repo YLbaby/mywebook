@@ -35,6 +35,11 @@ func (svc *UserService) SignUp(ctx context.Context, u domain.User) error {
 	return svc.repo.Create(ctx, u)
 }
 
+func (svc *UserService) Profile(ctx context.Context, id int64) (domain.User, error) {
+	u, err := svc.repo.FindById(ctx, id)
+	return u, err
+}
+
 func (svc *UserService) Login(ctx context.Context, email string, password string) (domain.User, error) {
 	// 先找用户
 	u, err := svc.repo.FindByEmail(ctx, email)

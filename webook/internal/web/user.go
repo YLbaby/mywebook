@@ -118,6 +118,7 @@ func (u *UserHandler) Edit(ctx *gin.Context) {
 }
 
 func (u *UserHandler) Profile(ctx *gin.Context) {
+
 	ctx.String(http.StatusOK, "这是你的Profile")
 }
 
@@ -183,7 +184,7 @@ func (u *UserHandler) LoginJWT(ctx *gin.Context) {
 	//token := jwt.New(jwt.SigningMethodHS512)
 	claims := UserClaims{
 		RegisteredClaims: jwt.RegisteredClaims{
-			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Minute)),
+			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Minute * 30)),
 		},
 		UID: user.Id,
 	}
@@ -220,6 +221,7 @@ func (u *UserHandler) ProfileJWT(ctx *gin.Context) {
 		ctx.String(http.StatusOK, "系统错误")
 		return
 	}
+	ctx.String(http.StatusOK, "这是你的profile")
 	fmt.Println(claims.UID)
 }
 

@@ -30,6 +30,7 @@ func (l *LoginMiddlewareBuilder) Build() gin.HandlerFunc {
 				return
 			}
 		}
+		// 这一步相当于是从ctx中拿到DefaultKey对应的值，也就是session
 		sess := sessions.Default(ctx)
 		id := sess.Get("userID")
 		// 如果没有登录
@@ -47,6 +48,7 @@ func (l *LoginMiddlewareBuilder) Build() gin.HandlerFunc {
 			sess.Options(sessions.Options{
 				MaxAge: 60,
 			})
+			// 因为main里面已经确定了store是redis，所以这里实际上是把session中的数据保存到redis中去
 			if err := sess.Save(); err != nil {
 				panic(err)
 			}

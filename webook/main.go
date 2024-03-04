@@ -45,10 +45,13 @@ func initWebServer() *gin.Engine {
 	}))
 
 	//store := memstore.NewStore([]byte("ox2cVum7bDppsC3PyVjIS8UgTEebRGzt"), []byte("cd3fdhDsYByyuRhEv2INEzpeS0NpVT5V"))
+	// 确定存储使用redis
 	store, err := redis.NewStore(32, "tcp", "localhost:6379", "", []byte("ox2cVum7bDppsC3PyVjIS8UgTEebRGzt"), []byte("cd3fdhDsYByyuRhEv2INEzpeS0NpVT5V"))
 	if err != nil {
 		panic(err)
 	}
+
+	// sessions.Sessions相当于给context注册了一个键值对{DefaultKey: session}
 	server.Use(sessions.Sessions("mysession", store))
 	server.Use(middleware.NewLoginJWTMiddlewareBuilder().IgnorePaths("/users/login").IgnorePaths("/users/signup").Build())
 	return server

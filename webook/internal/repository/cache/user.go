@@ -1,5 +1,6 @@
 package cache
 
+// 缓存用户基本信息
 import (
 	"basic-go/webook/internal/domain"
 	"context"

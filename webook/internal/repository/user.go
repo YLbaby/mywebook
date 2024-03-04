@@ -35,12 +35,14 @@ func (r *UserRepository) Create(ctx context.Context, u domain.User) error {
 }
 
 func (r *UserRepository) FindById(ctx context.Context, id int64) (domain.User, error) {
+	// 先查缓存
 	u, err := r.cache.Get(ctx, id)
 	if err == nil {
 		// 必然有数据
 		return u, nil
 	}
 
+	// 再查数据库
 	ue, err := r.dao.FindById(ctx, id)
 	if err != nil {
 		return domain.User{}, err
@@ -50,6 +52,7 @@ func (r *UserRepository) FindById(ctx context.Context, id int64) (domain.User, e
 		Email: ue.Email,
 	}
 
+	// 开一个协程将用户信息写入缓存
 	go func() {
 		err = r.cache.Set(ctx, u)
 		if err != nil {

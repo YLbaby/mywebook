@@ -24,6 +24,11 @@ type UserHandler struct {
 	passwordExp *regexp.Regexp
 }
 
+type UserClaims struct {
+	jwt.RegisteredClaims
+	UID int64
+}
+
 func NewUserHandler(svc *service.UserService) *UserHandler {
 	const (
 		emailRegexPattern    = "\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*"
@@ -223,9 +228,4 @@ func (u *UserHandler) ProfileJWT(ctx *gin.Context) {
 	}
 	ctx.String(http.StatusOK, "这是你的profile")
 	fmt.Println(claims.UID)
-}
-
-type UserClaims struct {
-	jwt.RegisteredClaims
-	UID int64
 }

@@ -51,6 +51,9 @@ func (u *UserHandler) RegisterRoutes(server *gin.Engine) {
 	ug.POST("/edit", u.Edit)
 	//ug.GET("/profile", u.Profile)
 	ug.GET("/profile", u.ProfileJWT)
+
+	ug.POST("/login_sms/code/send")
+	ug.POST("/login_sms")
 	//server.POST("/users/signup", u.SignUp)
 	//
 	//server.POST("/users/login", u.Login)

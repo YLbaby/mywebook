@@ -8,16 +8,16 @@ import (
 )
 
 var (
-	ErrUserDuplicateEmail = dao.ErrUserDuplicateEmail
+	ErrUserDuplicateEmail = dao.ErrUserDuplicate
 	ErrUserNotFound       = dao.ErrUserNotFound
 )
 
 type UserRepository struct {
-	dao   *dao.UserDAO
-	cache cache.UserCache
+	dao   dao.UserDAO
+	cache cache.RedisUserCache
 }
 
-func NewUserRepository(dao *dao.UserDAO, c cache.UserCache) *UserRepository {
+func NewUserRepository(dao *dao.GORMUserDAO, c cache.RedisUserCache) *UserRepository {
 	return &UserRepository{
 		dao:   dao,
 		cache: c,
@@ -73,4 +73,8 @@ func (r *UserRepository) FindByEmail(ctx context.Context, email string) (domain.
 		Email:    u.Email,
 		Password: u.Password,
 	}, err
+}
+
+func (r *CachedCodeRepository) domainToEntity(u domain.User) dao.User {
+
 }
